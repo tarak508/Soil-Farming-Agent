@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Signup | Soil Farming Agent</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="img/soil.png" alt="Soil Icon"
+                    style="display:inline-block; height:24px; margin-right:10px;">
+                    Soil Farming Agent</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid decor_bg" id="content">
+        <div class="row">
+            <div class="container">
+                <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3">
+                    <h2>SIGN UP</h2>
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Contact" maxlength="10" size="10" name="contact" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="City" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Address" name="address" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <center>
+                <p>Copyright &copy; Soil Farming Agent. All Rights Reserved | Contact Us: +91 90000 00000</p>
+            </center>
+        </div>
+    </footer>
+
+    <!-- Firebase Configuration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqEKhxlK7mNIkwchlw5TJGRUoMTkwzOi8",
+            authDomain: "soil-farming-agent-ay2277.firebaseapp.com",
+            databaseURL: "https://soil-farming-agent-ay2277-default-rtdb.firebaseio.com/",
+            projectId: "soil-farming-agent-ay2277",
+            storageBucket: "soil-farming-agent-ay2277.appspot.com",
+            messagingSenderId: "1086872501805",
+            appId: "1:1086872501805:web:5a4db008e98514826742a4",
+            measurementId: "G-73CDFP7CPL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        document.getElementById('signupForm').addEventListener('submit', submitForm);
+
+        function submitForm(e) {
+            e.preventDefault();
+
+            const name = document.querySelector('input[name="name"]').value;
+            const email = document.querySelector('input[name="email"]').value;
+            const password = document.querySelector('input[name="password"]').value;
+            const contact = document.querySelector('input[name="contact"]').value;
+            const city = document.querySelector('input[name="city"]').value;
+            const address = document.querySelector('input[name="address"]').value;
+
+            saveUser(name, email, password, contact, city, address);
+        }
+
+        function saveUser(name, email, password, contact, city, address) {
+            const userId = new Date().getTime();
+            set(ref(database, 'users/' + userId), {
+                name: name,
+                email: email,
+                password: password,
+                contact: contact,
+                city: city,
+                address: address
+            }).then(() => {
+                alert("User registered successfully!");
+                localStorage.setItem('user', JSON.stringify({ name, email }));
+                window.location.href = 'index.html';
+            }).catch((error) => {
+                alert("Error: " + error.message);
+            });
+        }
+    </script>
+</body>
+</html>

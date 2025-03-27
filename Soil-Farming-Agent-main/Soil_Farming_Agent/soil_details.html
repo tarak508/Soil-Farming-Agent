@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Soil Details | Soil Farming Agent</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-custom">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="img/soil.png" alt="Soil Icon"
+                    style="display:inline-block; height:24px; margin-right:10px;">
+                    Soil Farming Agent</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right" id="navbarContent">
+                    <li><a href="register.html"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+                    <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="content">
+        <h2>Soil Details</h2>
+        <div class="row" id="soilList">
+            <!-- Soil details will be populated here -->
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <center>
+                <p>&copy; Soil Farming Agent. All Rights Reserved | Contact Us: +91 90000 00000</p>
+            </center>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqEKhxlK7mNIkwchlw5TJGRUoMTkwzOi8",
+            authDomain: "soil-farming-agent-ay2277.firebaseapp.com",
+            databaseURL: "https://soil-farming-agent-ay2277-default-rtdb.firebaseio.com/",
+            projectId: "soil-farming-agent-ay2277",
+            storageBucket: "soil-farming-agent-ay2277.appspot.com",
+            messagingSenderId: "1086872501805",
+            appId: "1:1086872501805:web:5a4db008e98514826742a4",
+            measurementId: "G-73CDFP7CPL"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const soilList = document.getElementById('soilList');
+            const soilDetailsRef = ref(database, 'soilDetails');
+
+            onValue(soilDetailsRef, (snapshot) => {
+                soilList.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    const soilData = childSnapshot.val();
+                    const soilDiv = document.createElement('div');
+                    soilDiv.classList.add('col-sm-4', 'col-md-3', 'col-lg-3', 'mt-3'); // Updated classes
+                    soilDiv.innerHTML = `
+                        <div class="thumbnail">
+                            <img src="${soilData.imageUrl}" alt="${soilData.name}">
+                            <div class="caption">
+                                <h3>${soilData.name}</h3>
+                                <p>${soilData.description}</p>
+                            </div>
+                        </div>
+                    `;
+                    soilList.appendChild(soilDiv);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

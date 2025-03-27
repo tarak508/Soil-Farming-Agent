@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Soil Farming Agent - Soil Details</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <style>
+        /* Custom styles for the soil details section */
+        #soilDetailsContainer {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        /* Styling for the table */
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            vertical-align: middle; /* Vertically center content */
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+            background-color: #f0f8ff; /* Light blue header background */
+            font-weight: bold;
+            text-align: left; /* Align header text to the left */
+        }
+
+        .table td {
+            font-size: 0.9rem;
+        }
+
+        .small.text-muted {
+            font-size: 0.8rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body style="padding-top: 50px;">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="img/soil.png" alt="Soil Icon"
+                         style="display:inline-block; height:24px; margin-right:10px;">
+                    Soil Farming Agent</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="text-center mb-4">Soil Types</h2>
+        <div id="soilDetailsContainer">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Soil Type Name</th>
+                        <th>% Sand</th>
+                        <th>% Silt</th>
+                        <th>% Clay</th>
+                        <th>Wilting Point</th>
+                        <th>Saturation Soil Moisture</th>
+                    </tr>
+                </thead>
+                <tbody id="soilTableBody">
+                    <tr>
+                        <td>1</td>
+                        <td>Sand</td>
+                        <td>92</td>
+                        <td>5</td>
+                        <td>3</td>
+                        <td>0.010</td>
+                        <td>0.339</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Loamy sand</td>
+                        <td>82</td>
+                        <td>12</td>
+                        <td>6</td>
+                        <td>0.028</td>
+                        <td>0.421</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Sandy loam</td>
+                        <td>58</td>
+                        <td>32</td>
+                        <td>10</td>
+                        <td>0.047</td>
+                        <td>0.434</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Silt loam</td>
+                        <td>17</td>
+                        <td>70</td>
+                        <td>13</td>
+                        <td>0.084</td>
+                        <td>0.476</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Silt</td>
+                        <td>10</td>
+                        <td>85</td>
+                        <td>5</td>
+                        <td>0.084</td>
+                        <td>0.476</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Loam</td>
+                        <td>43</td>
+                        <td>39</td>
+                        <td>18</td>
+                        <td>0.066</td>
+                        <td>0.439</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Sandy clay loam</td>
+                        <td>58</td>
+                        <td>15</td>
+                        <td>27</td>
+                        <td>0.067</td>
+                        <td>0.404</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Silty clay loam</td>
+                        <td>10</td>
+                        <td>56</td>
+                        <td>34</td>
+                        <td>0.120</td>
+                        <td>0.464</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Clay loam</td>
+                        <td>32</td>
+                        <td>34</td>
+                        <td>34</td>
+                        <td>0.103</td>
+                        <td>0.465</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Sandy clay</td>
+                        <td>52</td>
+                        <td>6</td>
+                        <td>42</td>
+                        <td>0.100</td>
+                        <td>0.406</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Silty clay</td>
+                        <td>6</td>
+                        <td>47</td>
+                        <td>47</td>
+                        <td>0.126</td>
+                        <td>0.468</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Clay</td>
+                        <td>22</td>
+                        <td>20</td>
+                        <td>58</td>
+                        <td>0.138</td>
+                        <td>0.468</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>Organic material</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0.066</td>
+                        <td>0.439</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>Water</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0.000</td>
+                        <td>1.000</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Bedrock</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0.006</td>
+                        <td>0.200</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>Other</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0.028</td>
+                        <td>0.421</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="small text-muted mt-2 text-center">This table contains the reference composition of sand, silt, and clay for each soil type (Davis and Bennett, 1927).</p>
+        </div>
+    </div>
+</body>
+
+</html>

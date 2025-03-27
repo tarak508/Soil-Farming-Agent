@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Distributor Details | Soil Farming Agent</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-custom">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="img/soil.png" alt="Soil Icon"
+                    style="display:inline-block; height:24px; margin-right:10px;">
+                    Soil Farming Agent</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right" id="navbarContent">
+                    <li><a href="index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Admin: Upload Distributor Details</h2>
+        <form id="distributorForm">
+            <div class="form-group">
+                <label for="distributorName">Distributor Name:</label>
+                <input type="text" class="form-control" id="distributorName" required>
+            </div>
+            <div class="form-group">
+                <label for="distributorAddress">Distributor Address:</label>
+                <input type="text" class="form-control" id="distributorAddress" required>
+            </div>
+            <div class="form-group">
+                <label for="distributorSoils">Soils Distributor Sells:</label>
+                <input type="text" class="form-control" id="distributorSoils" required>
+            </div>
+            <div class="form-group">
+                <label for="distributorRange">Delivery Range of Distributor:</label>
+                <input type="text" class="form-control" id="distributorRange" required>
+            </div>
+            <div class="form-group">
+                <label for="distributorImage">Upload Image:</label>
+                <input type="file" class="form-control" id="distributorImage" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+    </div>
+
+   
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqEKhxlK7mNIkwchlw5TJGRUoMTkwzOi8",
+            authDomain: "soil-farming-agent-ay2277.firebaseapp.com",
+            databaseURL: "https://soil-farming-agent-ay2277-default-rtdb.firebaseio.com/",
+            projectId: "soil-farming-agent-ay2277",
+            storageBucket: "soil-farming-agent-ay2277.appspot.com",
+            messagingSenderId: "1086872501805",
+            appId: "1:1086872501805:web:5a4db008e98514826742a4",
+            measurementId: "G-73CDFP7CPL"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const storage = getStorage(app);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('distributorForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const distributorName = document.getElementById('distributorName').value;
+                const distributorAddress = document.getElementById('distributorAddress').value;
+                const distributorSoils = document.getElementById('distributorSoils').value;
+                const distributorRange = document.getElementById('distributorRange').value;
+                const distributorImage = document.getElementById('distributorImage').files[0];
+
+                if (!distributorImage) {
+                    alert('Please select an image to upload.');
+                    return;
+                }
+
+                const storageRefPath = storageRef(storage, 'distributorImages/' + distributorImage.name);
+                const uploadTask = uploadBytesResumable(storageRefPath, distributorImage);
+
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Upload is ' + progress + '% done');
+                    },
+                    (error) => {
+                        console.error('Upload failed:', error);
+                    },
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                            const distributorData = {
+                                name: distributorName,
+                                address: distributorAddress,
+                                soils: distributorSoils,
+                                range: distributorRange,
+                                imageUrl: downloadURL
+                            };
+                            push(ref(database, 'distributorDetails'), distributorData)
+                                .then(() => {
+                                    alert('Distributor details uploaded successfully');
+                                    document.getElementById('distributorForm').reset();
+                                })
+                                .catch((error) => {
+                                    console.error('Error storing distributor details:', error);
+                                });
+                        });
+                    }
+                );
+            });
+        });
+    </script>
+</body>
+
+</html>

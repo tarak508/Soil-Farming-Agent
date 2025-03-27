@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | Soil Farming Agent</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="img/soil.png" alt="Soil Icon"
+                    style="display:inline-block; height:24px; margin-right:10px;">
+                    Soil Farming Agent</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="content">
+        <div class="container-fluid decor_bg" id="login-panel">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>LOGIN</h4>
+                        </div>
+                        <div class="panel-body">
+                            <p class="text-warning"><i>Login to make a purchase</i>
+                            <p>
+                            <form id="loginForm" role="form">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" placeholder="Email" name="email" required>
+                                    <div class="invalid-feedback">Invalid email or password.</div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" placeholder="Password" name="password" required>
+                                </div>
+                                <button type="submit" name="submit" class="btn btn-primary">Login</button><br><br>
+                            </form><br />
+                        </div>
+                        <div class="panel-footer">
+                            <p>Don't have an account? <a href="signup.html">signup</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <center>
+                <p>&copy; Soil Farming Agent. All Rights Reserved | Contact Us: +91 90000 00000</p>
+            </center>
+        </div>
+    </footer>
+
+    <!-- Firebase Configuration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqEKhxlK7mNIkwchlw5TJGRUoMTkwzOi8",
+            authDomain: "soil-farming-agent-ay2277.firebaseapp.com",
+            databaseURL: "https://soil-farming-agent-ay2277-default-rtdb.firebaseio.com/",
+            projectId: "soil-farming-agent-ay2277",
+            storageBucket: "soil-farming-agent-ay2277.appspot.com",
+            messagingSenderId: "1086872501805",
+            appId: "1:1086872501805:web:5a4db008e98514826742a4",
+            measurementId: "G-73CDFP7CPL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        document.getElementById('loginForm').addEventListener('submit', submitForm);
+
+        function submitForm(e) {
+            e.preventDefault();
+
+            const emailInput = document.querySelector('input[name="email"]');
+            const passwordInput = document.querySelector('input[name="password"]');
+            const invalidFeedback = document.querySelector('.invalid-feedback');
+
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            authenticateUser(email, password, emailInput, passwordInput, invalidFeedback);
+        }
+
+        function authenticateUser(email, password, emailInput, passwordInput, invalidFeedback) {
+            const dbRef = ref(database);
+            get(child(dbRef, 'users')).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const users = snapshot.val();
+                    let authenticated = false;
+                    let userName = '';
+
+                    for (let userId in users) {
+                        if (users[userId].email === email && users[userId].password === password) {
+                            authenticated = true;
+                            userName = users[userId].name;
+                            break;
+                        }
+                    }
+
+                    if (authenticated) {
+                        localStorage.setItem('user', JSON.stringify({ name: userName, email }));
+                        window.location.href = 'index.html';
+                    } else {
+                        emailInput.classList.add('invalid-input');
+                        passwordInput.classList.add('invalid-input');
+                        invalidFeedback.style.display = 'block';
+                    }
+                } else {
+                    emailInput.classList.add('invalid-input');
+                    passwordInput.classList.add('invalid-input');
+                    invalidFeedback.style.display = 'block';
+                }
+            }).catch((error) => {
+                emailInput.classList.add('invalid-input');
+                passwordInput.classList.add('invalid-input');
+                invalidFeedback.style.display = 'block';
+                console.error("Error: " + error.message);
+            });
+        }
+    </script>
+</body>
+
+</html>
